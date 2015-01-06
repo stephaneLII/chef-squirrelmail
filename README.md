@@ -21,16 +21,45 @@ This cookbook install and configure a mail transport agent based on Qmail with L
     <td>default config files</td>
     <td><tt>/etc/squirrelmail</tt></td>
   </tr>
+  <tr>
+    <td><tt>['chef-squirrelmail']['apache2_home']</tt></td>
+    <td>String</td>
+    <td>default config files for apache2</td>
+    <td><tt>/etc/apache2</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['chef-squirrelmail']['site_name']</tt></td>
+    <td>String</td>
+    <td>name of the apache site web</td>
+    <td><tt>webmail</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['chef-squirrelmail']['site_home']</tt></td>
+    <td>String</td>
+    <td>Path to the squirrelmail web site</td>
+    <td><tt>/usr/share/squirrelmail</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['chef-squirrelmail']['data_home']</tt></td>
+    <td>String</td>
+    <td>Path to the squirrelmail users data</td>
+    <td><tt>/usr/share/squirrelmail/data</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['chef-squirrelmail']['apache_owner']</tt></td>
+    <td>String</td>
+    <td>Owner of the apache user</td>
+    <td><tt>www-data</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['chef-squirrelmail']['apache_group']</tt></td>
+    <td>String</td>
+    <td>Group of the apache user</td>
+    <td><tt>www-data</tt></td>
+  </tr>
 </table>
 
-default['chef-squirrelmail']['squirrel_home'] = '/etc/squirrelmail'
-default['chef-squirrelmail']['apache2_home'] = '/etc/apache2'
-default['chef-squirrelmail']['site_name'] = 'webmail'
-default['chef-squirrelmail']['site_home'] = '/usr/share/squirrelmail'
-default['chef-squirrelmail']['data_home'] = '/usr/share/squirrelmail/data'
-default['chef-squirrelmail']['apache_owner'] = 'www-data'
-default['chef-squirrelmail']['apache_group'] = 'www-data'
-
+See the default attribute file for more precisions.
 
 ## Usage
 
