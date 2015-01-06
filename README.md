@@ -1,10 +1,10 @@
 # chef-squirrelmail-cookbook
 
-TODO: Enter the cookbook description here.
+This cookbook install and configure a mail transport agent based on Qmail with LDAP support.
 
 ## Supported Platforms
 
-TODO: List your supported platforms.
+* DEBIAN 7.0.1
 
 ## Attributes
 
@@ -16,12 +16,21 @@ TODO: List your supported platforms.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['chef-squirrelmail']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td><tt>['chef-squirrelmail']['squirrel_home']</tt></td>
+    <td>String</td>
+    <td>default config files</td>
+    <td><tt>/etc/squirrelmail</tt></td>
   </tr>
 </table>
+
+default['chef-squirrelmail']['squirrel_home'] = '/etc/squirrelmail'
+default['chef-squirrelmail']['apache2_home'] = '/etc/apache2'
+default['chef-squirrelmail']['site_name'] = 'webmail'
+default['chef-squirrelmail']['site_home'] = '/usr/share/squirrelmail'
+default['chef-squirrelmail']['data_home'] = '/usr/share/squirrelmail/data'
+default['chef-squirrelmail']['apache_owner'] = 'www-data'
+default['chef-squirrelmail']['apache_group'] = 'www-data'
+
 
 ## Usage
 
@@ -39,4 +48,4 @@ Include `chef-squirrelmail` in your node's `run_list`:
 
 ## License and Authors
 
-Author:: YOUR_NAME (<YOUR_EMAIL>)
+Author : DSI (<stephane.lii@informatique.gov.pf>)
