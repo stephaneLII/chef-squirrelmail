@@ -1,6 +1,6 @@
 # chef-squirrelmail-cookbook
 
-This cookbook install and configure a mail transport agent based on Qmail with LDAP support.
+This cookbook install and configure the squirrelmail package.
 
 ## Supported Platforms
 
