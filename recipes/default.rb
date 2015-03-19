@@ -14,18 +14,19 @@ apache_home = node['chef-squirrelmail']['apache2_home']
 site_name = node['chef-squirrelmail']['site_name']
 site_home = node['chef-squirrelmail']['site_home']
 
+template "#{apache_home}/sites-available/#{site_name}" do
+  source 'config-virtualhost.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
 bash 'site-enable' do
   user 'root'
   code <<-EOH
-  cp #{squirrel_home}/apache.conf #{apache_home}/sites-available/#{site_name}
-  chown -R #{node['chef-squirrelmail']['apache_owner']}:#{node['chef-squirrelmail']['apache_group']} #{site_home}
+  a2ensite #{site_name}
   EOH
 end
-
-link "#{apache_home}/sites-enabled/#{site_name}" do
-  to "#{apache_home}/sites-available/#{site_name}"
-end
-
 
 case node['platform']
   when 'ubuntu'
