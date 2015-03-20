@@ -12,6 +12,7 @@ package "php5-ldap"
 squirrel_home = node['chef-squirrelmail']['squirrel_home']
 apache_home = node['chef-squirrelmail']['apache2_home']
 site_name = node['chef-squirrelmail']['site_name']
+site_name_ssl = node['chef-squirrelmail']['site_name'] + "-ssl"
 site_home = node['chef-squirrelmail']['site_home']
 
 template "#{apache_home}/sites-available/#{site_name}" do
@@ -21,10 +22,18 @@ template "#{apache_home}/sites-available/#{site_name}" do
   mode '0644'
 end
 
+template "#{apache_home}/sites-available/#{site_name}-ssl" do
+  source 'config-virtualhost-ssl.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
 bash 'site-enable' do
   user 'root'
   code <<-EOH
   a2ensite #{site_name}
+  a2ensite #{site_name_ssl}
   EOH
 end
 
