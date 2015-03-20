@@ -1,0 +1,38 @@
+<VirtualHost <%= node['chef-squirrelmail']['virtualhost_name'] %>:443>
+        ServerAdmin webmaster@localhost
+
+
+        DocumentRoot /usr/share/squirrelmail
+<Directory <%= node['chef-squirrelmail']['site_home'] %>>
+  Options FollowSymLinks
+  <IfModule mod_php5.c>
+    php_flag register_globals off
+  </IfModule>
+  <IfModule mod_dir.c>
+    DirectoryIndex index.php
+  </IfModule>
+
+  # access to configtest is limited by default to prevent information leak
+  <Files configtest.php>
+    order deny,allow
+    deny from all
+    allow from 127.0.0.1
+  </Files>
+</Directory>
+
+
+        ErrorLog ${APACHE_LOG_DIR}/<%= node['chef-squirrelmail']['site_name'] %>-ssl-error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+       CustomLog ${APACHE_LOG_DIR}/<%= node['chef-squirrelmail']['site_name'] %>-ssl-access.log combined
+
+  SSLEngine on
+  SSLCertificateFile "/etc/ssl/certs/<%= node['chef-squirrelmail']['virtualhost_name'] %>.crt"
+  SSLCertificateKeyFile "/etc/ssl/private/<%= node['chef-squirrelmail']['virtualhost_name'] %>.key"
+
+        
+</VirtualHost>
+
