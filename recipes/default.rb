@@ -15,33 +15,81 @@ site_name = node['chef-squirrelmail']['site_name']
 site_name_ssl = node['chef-squirrelmail']['site_name'] + "-ssl"
 site_home = node['chef-squirrelmail']['site_home']
 
-template "#{apache_home}/sites-available/#{site_name}" do
-  source 'config-virtualhost.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
+if node['chef-squirrelmail']['databag']['encrypted'] == true
+  secret = Chef::EncryptedDataBagItem.load_secret(node['chef-squirrelmail']['databag']['secret_path'])
+  item =  Chef::EncryptedDataBagItem.load(node['chef-squirrelmail']['databag']['name'], node['chef-squirrelmail']['databag']['item'], secret)
+else
+  item = data_bag_item(node['chef-squirrelmail']['databag']['name'], node['chef-squirrelmail']['databag']['item'])
 end
 
-template "#{apache_home}/sites-available/#{site_name}-ssl" do
-  source 'config-virtualhost-ssl.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
+item['apps'].each do |apps|
+   cakey=apps['cakey']
+   cakeyname=apps['cakeyname']
+   pemkey=apps['key']
+   crtkey=apps['cert']
+
+   template '/etc/ssl/certs/' + cakeyname + '.crt' do
+    source 'certificate.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    variables(
+      certificate: cakey
+    )
+  end
+
+
+  template '/etc/ssl/certs/' + node['chef-squirrelmail']['virtualhost_name'] + '.crt' do
+    source 'certificate.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    variables(
+      certificate: crtkey
+    )
+  end
+
+  template '/etc/ssl/private/' + node['chef-squirrelmail']['virtualhost_name'] + '.key' do
+    source 'certificate.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    variables(
+      certificate: pemkey
+    )
+  end
+
+   template "#{apache_home}/sites-available/#{site_name}" do
+     source 'config-virtualhost.erb'
+     owner 'root'
+     group 'root'
+     mode '0644'
+   end
+
+   template "#{apache_home}/sites-available/#{site_name}-ssl" do
+     source 'config-virtualhost-ssl.erb'
+     owner 'root'
+     group 'root'
+     mode '0644'
+     variables(
+      cakeyname: cakeyname + '.crt'
+     )
+   end
+
+   bash 'site-enable' do
+     user 'root'
+     code <<-EOH
+        a2ensite #{site_name}
+        a2ensite #{site_name_ssl}
+     EOH
 end
 
-bash 'site-enable' do
-  user 'root'
-  code <<-EOH
-  a2ensite #{site_name}
-  a2ensite #{site_name_ssl}
-  EOH
 end
-
 case node['platform']
   when 'ubuntu'
-    restart_command = '/etc/init.d/apache2 restart'
+    restart_command = '/usr/sbin/a2enmod ssl ; /etc/init.d/apache2 restart'
   when 'debian'
-    restart_command = '/etc/init.d/apache2 restart'
+    restart_command = '/usr/sbin/a2enmod ssl ; /etc/init.d/apache2 restart'
 end
 
 bash 'squirrelmail-restart' do

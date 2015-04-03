@@ -1,7 +1,11 @@
+default['chef-squirrelmail']['databag']['encrypted'] = true
+default['chef-squirrelmail']['databag']['secret_path'] = '/etc/chef/encrypted_data_bag_secret'
+default['chef-squirrelmail']['databag']['name'] = 'chef-squirrelmail'
+default['chef-squirrelmail']['databag']['item'] = 'apps'
 default['chef-squirrelmail']['squirrel_home'] = '/etc/squirrelmail'
 default['chef-squirrelmail']['apache2_home'] = '/etc/apache2'
-default['chef-squirrelmail']['site_name'] = 'webmail.gov.pf'
-default['chef-squirrelmail']['virtualhost_name'] = 'webmail.a1a2.srv.gov.pf'
+default['chef-squirrelmail']['site_name'] = ''
+default['chef-squirrelmail']['virtualhost_name'] = ''
 default['chef-squirrelmail']['site_home'] = '/usr/share/squirrelmail'
 default['chef-squirrelmail']['data_home'] = '/usr/share/squirrelmail/data'
 default['chef-squirrelmail']['apache_owner'] = 'www-data'
