@@ -139,3 +139,9 @@ template "#{site_home}/functions/i18n.php" do
   group "#{node['chef-squirrelmail']['apache_group']}"
   mode '0644'
 end
+template "#{site_home}/functions/strings.php" do
+  source 'strings.erb'
+  owner "#{node['chef-squirrelmail']['apache_owner']}"
+  group "#{node['chef-squirrelmail']['apache_group']}"
+  mode '0644'
+end
